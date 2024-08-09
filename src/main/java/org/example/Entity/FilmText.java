@@ -7,15 +7,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table
+@Table(schema = "movie", name = "film_text")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 public class FilmText {
     @Id
+    @Column(name = "film_id")
+    private Short filmId;
     @OneToOne
-    private Integer filmId;
+    @JoinColumn(name = "film_id")
+    private Film film;
     @Column
     private String title;
     @Column

@@ -1,26 +1,27 @@
 package org.example.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 @Entity
-@Table
+@Table(schema = "movie", name = "film_category")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class FilmCategory {
     @Id
-    private Integer FilmId;
-    @Column
+    @Column(name = "film_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Short FilmId;
+    @Column(name = "category_id")
     private Integer CategoryId;
-    @Column
-    private Date lastUdate;
+    @Column(name = "last_update")
+    @UpdateTimestamp
+    private LocalDateTime lastUdate;
 }

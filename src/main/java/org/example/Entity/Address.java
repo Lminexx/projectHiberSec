@@ -1,37 +1,39 @@
 package org.example.Entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 @Entity
-@Table
+@Table(schema = "movie", name = "address")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Address {
     @Id
-    private Integer addressId;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id")
+    private Short addressId;
+    @Column(name = "address")
     private String address;
-    @Column
+    @Column(name = "address2")
     private String address2;
     @Column
     private String district;
-    @Column
-    private Integer cityId;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City cityId;
+    @Column(name = "postal_code")
     private String postalCode;
     @Column
     private String phone;
-    @Column
-    private Date lastUpdate;
+    @Column(name = "last_update")
+    @UpdateTimestamp
+    private LocalDateTime lastUpdate;
 
 }

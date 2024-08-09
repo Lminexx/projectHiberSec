@@ -1,34 +1,37 @@
 package org.example.Entity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 @Entity
-@Table
+@Table(schema = "movie", name = "rental")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 public class Rental {
     @Id
-    private Integer rantalId;
-    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "rental_id")
+    private Integer rentalId;
+    @Column(name = "rental_date")
     private Date rantalDate;
-    @Column
-    private Integer inventoryId;
-    @Column
-    private Integer customerId;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "inventory_id")
+    private Inventory inventoryId;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customerId;
+    @Column(name = "return_date")
     private Date returnDate;
-    @Column
-    private Integer staffId;
-    @Column
-    private Date lastUpdate;
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staffId;
+    @Column(name = "last_update")
+    @UpdateTimestamp
+    private LocalDateTime lastUpdate;
 }
