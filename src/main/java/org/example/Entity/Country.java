@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 public class Country {
     @Id
+    @Column(name = "country_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short countryId;
     @Column(name = "country")

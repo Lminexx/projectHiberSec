@@ -18,9 +18,9 @@ public class Language {
     @Id
     @Column(name = "language_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer languageId;
-    @Column
-    private String name;
+    private Byte languageId;
+    @Column(name = "name", length = 20)
+    private Character name;
     @Column(name="last_update")
     @UpdateTimestamp
     private LocalDateTime lastUpdate;

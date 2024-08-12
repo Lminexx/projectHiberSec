@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class Payment {
     @Id
     @Column(name = "payment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer paymentId;
+    private Short paymentId;
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customerId;
@@ -30,9 +31,9 @@ public class Payment {
     @OneToOne
     @JoinColumn(name = "rental_id")
     private Rental rentalId;
-    @Column(name = "amount")
-    private Double amount;
-    @Column
+    @Column(name = "amount", precision = 5, scale = 2)
+    private BigDecimal amount;
+    @Column(name = "payment_date")
     private Date paymentDate;
     @Column(name = "last_update")
     @UpdateTimestamp

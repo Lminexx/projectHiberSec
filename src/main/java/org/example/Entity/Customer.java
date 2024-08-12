@@ -18,7 +18,7 @@ public class Customer {
     @Id
     @Column(name = "customer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer customerId;
+    private Short customerId;
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store storeId;
@@ -34,7 +34,7 @@ public class Customer {
     @Column(name = "active", columnDefinition = "BIT")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean active;
-    @Column
+    @Column(name = "create_date")
     private Date createDate;
     @Column(name = "last_update")
     @UpdateTimestamp

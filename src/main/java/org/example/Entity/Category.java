@@ -19,7 +19,7 @@ import java.util.Set;
 public class Category {
     @Id
     @Column(name = "category_id")
-    private Integer categoryId;
+    private Byte categoryId;
     @Column(name = "name")
     private String name;
     @Column(name="last_update")

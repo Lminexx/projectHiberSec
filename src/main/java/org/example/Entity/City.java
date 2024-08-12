@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 @Setter
 public class City {
     @Id
+    @Column(name = "city_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short cityId;
     @Column(name = "city")

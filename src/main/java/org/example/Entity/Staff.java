@@ -19,7 +19,7 @@ public class Staff {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "staff_id")
-    private Short staffId;
+    private Byte staffId;
     @Column(name = "first_name")
     private String  firstName;
     @Column(name = "last_name")
@@ -28,15 +28,15 @@ public class Staff {
     @JoinColumn(name = "address_id")
     private Address addressId;
     @Lob
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "BLOB")
     private byte[] picture;
     @Column
     private String email;
     @OneToOne
     @JoinColumn(name = "store_id")
     private Store storeId;
-    @Column
-    private Short active;
+    @Column(name = "active", columnDefinition = "BIT")
+    private Boolean active;
     @Column
     private String username;
     @Column

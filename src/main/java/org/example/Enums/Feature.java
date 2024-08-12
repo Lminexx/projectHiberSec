@@ -1,5 +1,4 @@
 package org.example.Enums;
-
 public enum Feature {
     TRAILERS("Trailers"),
     COMMENTARIES("Commentaries"),

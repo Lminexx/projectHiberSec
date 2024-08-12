@@ -20,7 +20,7 @@ public class FilmCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short FilmId;
     @Column(name = "category_id")
-    private Integer CategoryId;
+    private Byte CategoryId;
     @Column(name = "last_update")
     @UpdateTimestamp
     private LocalDateTime lastUpdate;
