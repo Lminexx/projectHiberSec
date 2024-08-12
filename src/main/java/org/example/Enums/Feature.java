@@ -1,4 +1,5 @@
 package org.example.Enums;
+
 public enum Feature {
     TRAILERS("Trailers"),
     COMMENTARIES("Commentaries"),
@@ -12,16 +13,24 @@ public enum Feature {
         this.value = value;
     }
 
+
     public String getValue() {
         return value;
     }
+    
 
-    public static Feature getFeatureByValue(String value) {
-        for (Feature feature : Feature.values()) {
-            if (feature.getValue().equals(value)) {
+    public static Feature fromValue(String value) {
+        if(value == null)
+            return null;
+
+        Feature[] features = Feature.values();
+        for(Feature feature : features) {
+            if(feature.value.equals(value)){
                 return feature;
             }
         }
         return null;
     }
+
+
 }

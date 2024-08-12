@@ -13,7 +13,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.Objects.isNull;
+
 @Entity
 @Table(schema = "movie", name = "film")
 @AllArgsConstructor
@@ -50,7 +55,7 @@ public class Film {
     @Convert(converter = RatingConventor.class)
     private Rating rating;
     @Column(name = "special_features", columnDefinition = "set('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes')")
-    private Feature specialFeatures;
+    private String specialFeatures;
     @ManyToMany
     @JoinTable(name="film_actor",
             joinColumns= @JoinColumn(name = "film_id",referencedColumnName = "film_id"),
@@ -66,7 +71,23 @@ public class Film {
     private LocalDateTime lastUpdate;
 
 
-
-
-
+    public Set<Feature> getSpecialFeatures() {
+        if (isNull(specialFeatures) || specialFeatures.isEmpty()) {
+            return null;
+        }
+        Set<Feature> result = new HashSet<>();
+        String[] features = specialFeatures.split(" ");
+        for (String feature : features) {
+            result.add(Feature.fromValue(feature));
+        }
+        result.remove(null);
+        return result;
+    }
+    public void setSpecialFeatures(Set<Feature> specialFeatures) {
+        if(isNull(specialFeatures)){
+            specialFeatures = null;
+        }else{
+            specialFeatures.stream().map(Feature::getValue).collect(Collectors.joining(","));
+        }
+    }
 }

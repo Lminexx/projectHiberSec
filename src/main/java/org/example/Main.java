@@ -7,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
+import java.math.BigDecimal;
 import java.util.Date;
 public class Main {
     private final SessionFactory sessionFactory;
@@ -69,9 +70,11 @@ public class Main {
     }
     public static void main(String[] args) {
     Main main = new Main();
-//    Customer customer = main.createCustomer();
-    main.customerBackAtInventory();
+       Customer customer = main.createCustomer();
+    //main.customerBackAtInventory();
+      main.clientRentalInventor(customer);
     }
+
 
     public Customer createCustomer() {
         Transaction tx = null;
@@ -119,6 +122,47 @@ public class Main {
             if (tx != null) {
                 tx.rollback();
             }
+        }
+    }
+
+    private void clientRentalInventor(Customer customer) {
+        Transaction tx = null;
+        try{
+            tx = sessionFactory.getCurrentSession().beginTransaction();
+            Film normFilm = filmDAO.getNormFilm();
+
+
+            Store store = storeDAO.getItems(0, 1).getFirst();
+
+
+            Inventory inventory = new Inventory();
+            inventory.setStoreId(store);
+            inventory.setFilmId(normFilm);
+            inventoryDAO.save(inventory);
+
+
+            Staff staff = store.getManagerStaffId();
+
+            Rental rental = new Rental();
+            rental.setCustomerId(customer);
+            rental.setStaffId(staff);
+            rental.setInventoryId(inventory);
+            rental.setRantalDate(new Date());
+            rentalDAO.save(rental);
+
+            Payment payment = new Payment();
+            payment.setRentalId(rental);
+            payment.setPaymentDate(new Date());
+            payment.setAmount(BigDecimal.valueOf(2.4));
+            payment.setCustomerId(customer);
+            payment.setStaffId(staff);
+            paymentDAO.save(payment);
+
+
+            tx.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+
         }
     }
 }
