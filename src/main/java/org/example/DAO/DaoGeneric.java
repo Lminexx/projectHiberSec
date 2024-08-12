@@ -17,18 +17,18 @@ public class DaoGeneric<T> {
     }
 
     public T getById(int id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         return (T) session.get(clazz, id);
     }
 
     public List<T> getAll(){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         Query<T> query = session.createQuery("from " + clazz.getName(), clazz);
         return query.getResultList();
     }
 
     public List<T> getItems(int off , int cnt){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         Query<T> query = session.createQuery("from " + clazz.getName(), clazz);
         query.setFirstResult(off);
         query.setMaxResults(cnt);
@@ -36,26 +36,30 @@ public class DaoGeneric<T> {
     }
 
     public T save(T entity){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         session.save(entity);
         return entity;
     }
 
     public T update (T entity){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         session.update(entity);
         return entity;
     }
 
     public void delete(T entity){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         session.delete(entity);
     }
 
     public void deleteById(int id){
-        Session session = sessionFactory.getCurrentSession();
+        Session session = getSessionFactory();
         T entity = getById(id);
         session.delete(entity);
+    }
+
+    public Session getSessionFactory() {
+        return sessionFactory.getCurrentSession();
     }
 
 

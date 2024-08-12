@@ -65,7 +65,7 @@ public class Film {
 
     @ManyToMany
     @JoinTable(name = "film_category",
-    joinColumns = @JoinColumn(name = "fild_id", referencedColumnName = "fild_id"),
+    joinColumns = @JoinColumn(name = "film_id", referencedColumnName = "film_id"),
     inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "category_id"))
     private Set<Category> categories;
 

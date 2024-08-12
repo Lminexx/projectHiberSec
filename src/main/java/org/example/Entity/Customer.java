@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -30,8 +31,9 @@ public class Customer {
     @OneToOne
     @JoinColumn(name = "address_id")
     private Address addressId;
-    @Column(name = "active")
-    private Byte active;
+    @Column(name = "active", columnDefinition = "BIT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean active;
     @Column
     private Date createDate;
     @Column(name = "last_update")

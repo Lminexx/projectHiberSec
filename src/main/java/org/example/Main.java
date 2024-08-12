@@ -4,27 +4,30 @@ import org.example.DAO.*;
 import org.example.Entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
-public class Main {
-    private SessionFactory sessionFactory;
+import java.util.Date;
 
-    private ActorDAO actorDAO;
-    private AddressDAO addressDAO;
-    private CategoryDAO categoryDAO;
-    private CityDAO cityDAO;
-    private CountryDAO countryDAO;
-    private CustomerDAO customerDAO;
-    private FilmActorDAO filmActorDAO;
-    private FilmCategoryDao filmCategoryDAO;
-    private FilmDAO filmDAO;
-    private FilmTextDAO filmTextDAO;
-    private InventoryDAO inventoryDAO;
-    private LanguageDAO languageDAO;
-    private PaymentDAO paymentDAO;
-    private RentalDAO rentalDAO;
-    private StaffDAO staffDAO;
-    private StoreDAO storeDAO;
+public class Main {
+    private final SessionFactory sessionFactory;
+
+    private final ActorDAO actorDAO;
+    private final AddressDAO addressDAO;
+    private final CategoryDAO categoryDAO;
+    private final CityDAO cityDAO;
+    private final CountryDAO countryDAO;
+    private final CustomerDAO customerDAO;
+    private final FilmActorDAO filmActorDAO;
+    private final FilmCategoryDao filmCategoryDAO;
+    private final FilmDAO filmDAO;
+    private final FilmTextDAO filmTextDAO;
+    private final InventoryDAO inventoryDAO;
+    private final LanguageDAO languageDAO;
+    private final PaymentDAO paymentDAO;
+    private final RentalDAO rentalDAO;
+    private final StaffDAO staffDAO;
+    private final StoreDAO storeDAO;
 
 
     public Main() {
@@ -66,8 +69,34 @@ public class Main {
 
     }
     public static void main(String[] args) {
+    Main main = new Main();
+    Customer customer = main.createCustomer();
 
 
-        
+    }
+
+    public Customer createCustomer() {
+        try(Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            Store store = storeDAO.getItems(0, 1).getFirst();
+            City florida = cityDAO.getCity("Florida");
+            Address address = new Address();
+            address.setAddress("sovetskaya 222, 23");
+            address.setDistrict("flor");
+            address.setPhone("9618323232");
+            address.setCityId(florida);
+            addressDAO.save(address);
+            Customer customer = new Customer();
+            customer.setFirstName("Sanya");
+            customer.setLastName("Kiselev");
+            customer.setActive(true);
+            customer.setEmail("sasha.cd999@gmail.com");
+            customer.setCreateDate(new Date());
+            customer.setStoreId(store);
+            customer.setAddressId(address);
+            customerDAO.save(customer);
+            tx.commit();
+            return customer;
+        }
     }
 }

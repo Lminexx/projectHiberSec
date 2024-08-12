@@ -23,5 +23,5 @@ public class FilmCategory {
     private Integer CategoryId;
     @Column(name = "last_update")
     @UpdateTimestamp
-    private LocalDateTime lastUdate;
+    private LocalDateTime lastUpdate;
 }
