@@ -9,8 +9,9 @@ public class FilmDAO extends DaoGeneric<Film> {
         super(Film.class, sessionFactory);
     }
 
-    public Film getNormFilm() {
-        Query<Film> query = getSessionFactory().createQuery("select f from Film f where f.film_id = 46",Film.class);
+    public Film getNormFilm(int number) {
+        Query<Film> query = getSessionFactory().createQuery("select f from Film f where f.film_id = :num",Film.class);
+        query.setParameter("num", number);
         query.setMaxResults(1);
         return query.getSingleResult();
     }

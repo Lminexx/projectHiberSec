@@ -27,8 +27,9 @@ import static java.util.Objects.isNull;
 @Setter
 public class Film {
     @Id
+    @Column(name = "film_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short film_id;
+    private Short filmId;
     @Column(name = "title", columnDefinition = "LONGTEXT")
     private String title;
     @Column(name = "description")

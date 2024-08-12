@@ -2,13 +2,19 @@ package org.example;
 
 import org.example.DAO.*;
 import org.example.Entity.*;
+import org.example.Enums.Feature;
+import org.example.Enums.Rating;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.math.BigDecimal;
+import java.time.Year;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Main {
     private final SessionFactory sessionFactory;
 
@@ -70,9 +76,11 @@ public class Main {
     }
     public static void main(String[] args) {
     Main main = new Main();
-       Customer customer = main.createCustomer();
-    //main.customerBackAtInventory();
-      main.clientRentalInventor(customer);
+//       Customer customer = main.createCustomer();
+//    //main.customerBackAtInventory();
+//      main.clientRentalInventor(customer);
+
+    main.createNewFilm();
     }
 
 
@@ -129,7 +137,7 @@ public class Main {
         Transaction tx = null;
         try{
             tx = sessionFactory.getCurrentSession().beginTransaction();
-            Film normFilm = filmDAO.getNormFilm();
+            Film normFilm = filmDAO.getNormFilm(44);
 
 
             Store store = storeDAO.getItems(0, 1).getFirst();
@@ -163,6 +171,77 @@ public class Main {
         }catch (Exception e){
             e.printStackTrace();
 
+        }
+    }
+
+    private void createNewFilm(){
+        Transaction tx = null;
+        try{
+            tx = sessionFactory.getCurrentSession().beginTransaction();
+            Actor actorIam = new Actor();
+            actorIam.setFirstName("Alex");
+            actorIam.setLastName("Kiselev");
+            Actor actorBro = new Actor();
+            actorBro.setFirstName("Matvey");
+            actorBro.setLastName("Dude");
+            Set<Actor> homieActors = new HashSet<>();
+            Category horrorCategory = new Category();
+            horrorCategory.setName("Horror");
+            Category dramaCategory = new Category();
+            dramaCategory.setName("Drama");
+            Set<Category> myCategory = new HashSet<>();
+            Language language = languageDAO.getItems(0,20).getFirst();
+
+            Film myFilm = new Film();
+            myFilm.setActors(homieActors);
+            myFilm.setCategories(myCategory);
+            myFilm.setDescription("My film pro menya");
+            myFilm.setRating(Rating.R);
+            myFilm.setLanguageId(language);
+            myFilm.setOriginalLanguageId(language);
+            myFilm.setTitle("My film pro menya");
+            myFilm.setRentalRate(BigDecimal.valueOf(5.0));
+            myFilm.setReplacementCost(BigDecimal.valueOf(5.0));
+            myFilm.setLength((short) 230);
+            myFilm.setReleaseYear(Year.of(2024));
+            Set<Feature> settt = new HashSet<>();
+            settt.add(Feature.BEHIND_THE_SCENES);
+            settt.add(Feature.DELETED_SCENES);
+            myFilm.setSpecialFeatures(settt);
+            myFilm.setRentalDuration((byte) 123);
+            filmDAO.save(myFilm);
+
+            FilmText filmText = new FilmText();
+            filmText.setFilm(myFilm);
+            filmText.setDescription("wow& awesome");
+            filmText.setTitle("aboba");
+            filmTextDAO.save(filmText);
+
+            Store store = storeDAO.getItems(0, 1).getFirst();
+            Customer customer = customerDAO.getItems(0, 1).getFirst();
+            Inventory inventory = new Inventory();
+            inventory.setStoreId(store);
+            inventory.setFilmId(myFilm);
+            inventoryDAO.save(inventory);
+            Rental rental = new Rental();
+            rental.setInventoryId(inventory);
+            rental.setReturnDate(new Date());
+            rental.setRantalDate(new Date());
+            rental.setCustomerId(customer);
+            rental.setStaffId(store.getManagerStaffId());
+            rentalDAO.save(rental);
+            Payment payment = new Payment();
+            payment.setRentalId(rental);
+            payment.setAmount(BigDecimal.valueOf(5.0));
+            payment.setStaffId(store.getManagerStaffId());
+            payment.setCustomerId(customer);
+            payment.setPaymentDate(new Date());
+            paymentDAO.save(payment);
+            tx.commit();
+
+        }catch (Exception e){
+            tx.rollback();
+            e.printStackTrace();
         }
     }
 }
