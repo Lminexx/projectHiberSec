@@ -8,7 +8,6 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 
 import java.util.Date;
-
 public class Main {
     private final SessionFactory sessionFactory;
 
@@ -70,26 +69,22 @@ public class Main {
     }
     public static void main(String[] args) {
     Main main = new Main();
-    Customer customer = main.createCustomer();
-
-
+//    Customer customer = main.createCustomer();
+    main.customerBackAtInventory();
     }
 
     public Customer createCustomer() {
         Transaction tx = null;
         try {
             tx = sessionFactory.getCurrentSession().beginTransaction();
-
             Store store = storeDAO.getItems(0, 1).getFirst();
             City florida = cityDAO.getCity("Santa F");
-
             Address address = new Address();
             address.setAddress("sovetskaya 222, 23");
             address.setDistrict("flor");
             address.setPhone("9618323232");
             address.setCityId(florida);
             addressDAO.save(address);
-
             Customer customer = new Customer();
             customer.setFirstName("Sanya");
             customer.setLastName("Kiselev");
@@ -108,6 +103,22 @@ public class Main {
             }
             e.printStackTrace();
             throw e;
+        }
+    }
+
+    public void customerBackAtInventory(){
+        Transaction tx = null;
+        try {
+            tx = sessionFactory.getCurrentSession().beginTransaction();
+            Rental rental = rentalDAO.getRental();
+            System.out.println(rental.getRentalId());
+            rental.setReturnDate(new Date());
+            rentalDAO.save(rental);
+            tx.commit();
+        }catch (Exception e){
+            if (tx != null) {
+                tx.rollback();
+            }
         }
     }
 }
