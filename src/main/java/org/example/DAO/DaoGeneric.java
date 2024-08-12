@@ -7,8 +7,8 @@ import org.hibernate.query.Query;
 import java.util.List;
 
 public class DaoGeneric<T> {
-    private Class<T> clazz;
-    private SessionFactory sessionFactory;
+    private final Class<T> clazz;
+    private final SessionFactory sessionFactory;
 
 
     public DaoGeneric(Class<T> clazz, SessionFactory sessionFactory) {
@@ -58,7 +58,7 @@ public class DaoGeneric<T> {
         session.delete(entity);
     }
 
-    public Session getSessionFactory() {
+    protected Session getSessionFactory() {
         return sessionFactory.getCurrentSession();
     }
 

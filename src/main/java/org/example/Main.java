@@ -76,16 +76,20 @@ public class Main {
     }
 
     public Customer createCustomer() {
-        try(Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
+        Transaction tx = null;
+        try {
+            tx = sessionFactory.getCurrentSession().beginTransaction();
+
             Store store = storeDAO.getItems(0, 1).getFirst();
-            City florida = cityDAO.getCity("Florida");
+            City florida = cityDAO.getCity("Santa F");
+
             Address address = new Address();
             address.setAddress("sovetskaya 222, 23");
             address.setDistrict("flor");
             address.setPhone("9618323232");
             address.setCityId(florida);
             addressDAO.save(address);
+
             Customer customer = new Customer();
             customer.setFirstName("Sanya");
             customer.setLastName("Kiselev");
@@ -95,8 +99,15 @@ public class Main {
             customer.setStoreId(store);
             customer.setAddressId(address);
             customerDAO.save(customer);
+
             tx.commit();
             return customer;
+        } catch (Exception e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            throw e;
         }
     }
 }
