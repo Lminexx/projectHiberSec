@@ -1,14 +1,33 @@
 package org.example;
 
+import org.example.DAO.*;
 import org.example.Entity.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 public class Main {
-    private static SessionFactory sessionFactory;
-    public static void main(String[] args) {
+    private SessionFactory sessionFactory;
 
+    private ActorDAO actorDAO;
+    private AddressDAO addressDAO;
+    private CategoryDAO categoryDAO;
+    private CityDAO cityDAO;
+    private CountryDAO countryDAO;
+    private CustomerDAO customerDAO;
+    private FilmActorDAO filmActorDAO;
+    private FilmCategoryDao filmCategoryDAO;
+    private FilmDAO filmDAO;
+    private FilmTextDAO filmTextDAO;
+    private InventoryDAO inventoryDAO;
+    private LanguageDAO languageDAO;
+    private PaymentDAO paymentDAO;
+    private RentalDAO rentalDAO;
+    private StaffDAO staffDAO;
+    private StoreDAO storeDAO;
+
+
+    public Main() {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(Actor.class)
                 .addAnnotatedClass(Address.class)
@@ -28,15 +47,27 @@ public class Main {
                 .addAnnotatedClass(Store.class)
                 .buildSessionFactory();
 
-        try(Session session = sessionFactory.openSession()) {
-            session.beginTransaction();
-            Customer customer = new Customer();
-            customer.setFirstName("John");
-            customer.setLastName("Smith");
-            session.save(customer);
-            session.getTransaction().commit();
-        }
+        actorDAO = new ActorDAO(sessionFactory);
+        addressDAO = new AddressDAO(sessionFactory);
+        categoryDAO = new CategoryDAO(sessionFactory);
+        cityDAO = new CityDAO(sessionFactory);
+        countryDAO = new CountryDAO(sessionFactory);
+        customerDAO = new CustomerDAO(sessionFactory);
+        filmDAO = new FilmDAO(sessionFactory);
+        filmTextDAO = new FilmTextDAO(sessionFactory);
+        filmCategoryDAO = new FilmCategoryDao(sessionFactory);
+        filmActorDAO = new FilmActorDAO(sessionFactory);
+        inventoryDAO = new InventoryDAO(sessionFactory);
+        languageDAO = new LanguageDAO(sessionFactory);
+        paymentDAO = new PaymentDAO(sessionFactory);
+        rentalDAO = new RentalDAO(sessionFactory);
+        staffDAO = new StaffDAO(sessionFactory);
+        storeDAO = new StoreDAO(sessionFactory);
+
+    }
+    public static void main(String[] args) {
 
 
+        
     }
 }
